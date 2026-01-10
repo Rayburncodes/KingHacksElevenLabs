@@ -1,0 +1,122 @@
+Build a clean, demo-ready web app called “ClauseCast” (or “Before You Sign” if a name is required) that lets users hear the consequences of breaking a contract spoken out loud by AI.
+
+🧠 Core Concept
+
+Users upload or paste a contract.
+They click one of three predefined scenario buttons, and the app:
+
+Finds the relevant clause
+
+Rewrites it in plain English
+
+Generates a calm, professional AI voice explanation
+
+This is a consequence simulator, not a chatbot.
+
+🎯 MVP SCOPE (DO NOT ADD MORE)
+
+Only support these 3 scenarios:
+
+“If I quit early”
+
+“If I miss a payment”
+
+“If they terminate me”
+
+Each response should be:
+
+1–2 short paragraphs
+
+Plain language (no legal jargon)
+
+Include numbers or penalties if present
+
+Spoken aloud using text-to-speech
+
+🖥️ UI REQUIREMENTS
+
+Minimal, serious, judge-friendly UI:
+
+Title + one-line description
+
+Contract input (paste text OR upload file)
+
+Three large buttons (one per scenario)
+
+Text output area (what the AI says)
+
+Audio playback (auto-play preferred)
+
+No chat interface.
+No editing tools.
+No summaries of the full contract.
+
+🔊 VOICE
+
+Text-to-speech API integration placeholder
+
+Calm, neutral, professional tone
+
+Not robotic, not dramatic
+
+Architecture should allow plugging in ElevenLabs later
+
+⚠️ API keys and providers will be added later — do NOT hardcode or request credentials.
+
+🧩 LOGIC FLOW
+
+User provides contract text
+
+User clicks a scenario button
+
+App:
+
+Searches contract for relevant clauses
+
+If exact clause not found, infer conservatively
+
+Rewrites consequence in simple English
+
+Pass text to a voice generation placeholder
+
+Display text + play audio
+
+If info is missing, say:
+
+“This contract does not clearly specify penalties for this scenario.”
+
+⚙️ TECH STACK (suggested but flexible)
+
+Frontend: React
+
+Backend: Node.js / Express
+
+AI reasoning: LLM integration placeholder
+
+Voice: Text-to-speech placeholder
+
+⚠️ All external AI/voice APIs will be provided later.
+
+🚫 HARD CONSTRAINTS
+
+DO NOT:
+
+Add a chat assistant
+
+Add contract summaries
+
+Add more scenarios
+
+Over-engineer accuracy
+
+Ask follow-up questions to the user
+
+This is a 20-second demo app, not a legal product.
+
+✅ GOAL
+
+Produce a polished, working prototype that clearly demonstrates:
+
+“Press a button → hear what happens if you break this contract.”
+
+Judges should understand the value instantly.
