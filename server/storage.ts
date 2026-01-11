@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 export interface IStorage {
   createAnalysis(analysis: InsertAnalysis & { 
+    riskHeadline: string,
     originalClause: string, 
     plainEnglish: string, 
     highlightSnippets?: string[],
@@ -15,6 +16,7 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async createAnalysis(analysis: InsertAnalysis & { 
+    riskHeadline: string,
     originalClause: string, 
     plainEnglish: string, 
     highlightSnippets?: string[],

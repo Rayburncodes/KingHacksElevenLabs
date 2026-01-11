@@ -9,6 +9,7 @@ export const analyses = pgTable("analyses", {
   scenario: varchar("scenario", { length: 50 }).notNull(), // 'quit', 'payment', 'terminate'
   originalClause: text("original_clause"),
   plainEnglish: text("plain_english"),
+  riskHeadline: text("risk_headline"), // One-sentence summary
   highlightSnippets: text("highlight_snippets").array(),
   clarityLevel: varchar("clarity_level", { length: 20 }), // 'High', 'Medium', 'Low'
   clarityReason: text("clarity_reason"),
@@ -25,6 +26,7 @@ export type Analysis = typeof analyses.$inferSelect;
 
 export type AnalyzeRequest = InsertAnalysis;
 export type AnalyzeResponse = {
+  riskHeadline: string;
   originalClause: string;
   plainEnglish: string;
   highlightSnippets?: string[];

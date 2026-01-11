@@ -56,6 +56,9 @@ export function ResultCard({ data, scenario, onReset }: ResultCardProps) {
           </div>
 
           <div className="mt-4 space-y-6">
+            <p className="text-xl md:text-2xl font-bold text-white border-b border-white/10 pb-4 leading-tight">
+              {data.riskHeadline}
+            </p>
             <p className="text-lg md:text-xl leading-relaxed font-medium text-blue-50">
               {data.plainEnglish}
             </p>

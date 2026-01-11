@@ -70,6 +70,7 @@ export async function registerRoutes(
         
         Return ONLY a JSON object with this structure:
         {
+          "riskHeadline": "One clear summary sentence about the main consequence...",
           "originalClause": "substring from the contract...",
           "plainEnglish": "Your explanation here...",
           "highlightSnippets": ["exact sentence 1 from contract", "exact sentence 2 from contract"],
@@ -95,6 +96,7 @@ export async function registerRoutes(
       } catch (e) {
         console.error("Failed to parse AI response:", resultText);
         aiResult = { 
+          riskHeadline: "An error occurred during analysis.",
           originalClause: "Could not parse AI response.", 
           plainEnglish: "An error occurred while analyzing the contract.",
           highlightSnippets: [],
@@ -106,6 +108,7 @@ export async function registerRoutes(
       // Store in DB for history
       const saved = await storage.createAnalysis({
         ...input,
+        riskHeadline: aiResult.riskHeadline || "Analysis complete.",
         originalClause: aiResult.originalClause || "Not found",
         plainEnglish: aiResult.plainEnglish || "Could not generate explanation",
         highlightSnippets: aiResult.highlightSnippets || [],
@@ -114,6 +117,7 @@ export async function registerRoutes(
       });
 
       res.json({
+        riskHeadline: saved.riskHeadline || "",
         originalClause: saved.originalClause || "",
         plainEnglish: saved.plainEnglish || "",
         highlightSnippets: saved.highlightSnippets || [],

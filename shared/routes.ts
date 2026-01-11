@@ -9,6 +9,7 @@ export const api = {
       input: insertAnalysisSchema,
       responses: {
         200: z.object({
+          riskHeadline: z.string(),
           originalClause: z.string(),
           plainEnglish: z.string(),
           highlightSnippets: z.array(z.string()).optional(),
