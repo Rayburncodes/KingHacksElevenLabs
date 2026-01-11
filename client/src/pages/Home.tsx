@@ -88,8 +88,8 @@ export default function Home() {
             <h1 className="text-2xl font-serif font-bold tracking-tight text-primary">
               ClauseCast
             </h1>
-            <p className="text-sm text-muted-foreground font-medium">
-              Legal Interpretation Engine
+            <p className="text-sm text-slate-500 font-medium">
+              Understand what happens if things go wrong — before you sign.
             </p>
           </div>
         </div>
@@ -150,52 +150,58 @@ export default function Home() {
           <div className="space-y-6">
             <div className="flex items-center gap-4">
                <span className="h-px bg-slate-200 flex-1"></span>
-               <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
-                 {data ? "Explore Another Scenario" : "Step 2: Choose a Scenario"}
+               <span className="text-xs text-slate-400 uppercase tracking-widest font-bold">
+                 {data ? "Explore Another Risk" : "Step 2: Assess a Scenario"}
                </span>
                <span className="h-px bg-slate-200 flex-1"></span>
             </div>
+
+            {!data && !isAnalyzing && (
+              <p className="text-center text-sm text-slate-400 font-medium animate-in fade-in duration-1000">
+                Select a scenario below to hear a plain-language explanation of the legal consequences.
+              </p>
+            )}
 
             <div className="grid md:grid-cols-3 gap-6">
               <button
                 onClick={() => handleAnalyze('quit')}
                 disabled={isAnalyzing}
-                className={`btn-scenario ${activeScenario === 'quit' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
+                className={`btn-scenario ${activeScenario === 'quit' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
-                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                <div className="p-4 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-all duration-300 group-hover:shadow-sm">
                   <LogOut size={24} strokeWidth={1.5} />
                 </div>
-                <div className="text-center">
-                  <span className="block text-slate-900">If I quit early</span>
-                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Resignation terms</span>
+                <div className="text-center space-y-1">
+                  <span className="block text-slate-900 font-bold">If I quit early</span>
+                  <span className="block text-[11px] font-sans font-medium text-slate-400 group-hover:text-primary/60 transition-colors uppercase tracking-wider">Notice & Penalties</span>
                 </div>
               </button>
 
               <button
                 onClick={() => handleAnalyze('payment')}
                 disabled={isAnalyzing}
-                className={`btn-scenario ${activeScenario === 'payment' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
+                className={`btn-scenario ${activeScenario === 'payment' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
-                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                <div className="p-4 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-all duration-300 group-hover:shadow-sm">
                   <CreditCard size={24} strokeWidth={1.5} />
                 </div>
-                <div className="text-center">
-                  <span className="block text-slate-900">If I miss payment</span>
-                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Late fees & default</span>
+                <div className="text-center space-y-1">
+                  <span className="block text-slate-900 font-bold">If I miss payment</span>
+                  <span className="block text-[11px] font-sans font-medium text-slate-400 group-hover:text-primary/60 transition-colors uppercase tracking-wider">Default & Late Fees</span>
                 </div>
               </button>
 
               <button
                 onClick={() => handleAnalyze('terminate')}
                 disabled={isAnalyzing}
-                className={`btn-scenario ${activeScenario === 'terminate' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
+                className={`btn-scenario ${activeScenario === 'terminate' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
-                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                <div className="p-4 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-all duration-300 group-hover:shadow-sm">
                   <UserX size={24} strokeWidth={1.5} />
                 </div>
-                <div className="text-center">
-                  <span className="block text-slate-900">If they fire me</span>
-                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Employer termination</span>
+                <div className="text-center space-y-1">
+                  <span className="block text-slate-900 font-bold">If they fire me</span>
+                  <span className="block text-[11px] font-sans font-medium text-slate-400 group-hover:text-primary/60 transition-colors uppercase tracking-wider">Termination Rights</span>
                 </div>
               </button>
             </div>

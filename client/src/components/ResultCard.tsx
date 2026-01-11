@@ -27,7 +27,7 @@ export function ResultCard({ data, scenario, onReset }: ResultCardProps) {
           <CheckCircle2 size={12} />
           Analysis Complete
         </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-primary tracking-tight">
+        <h2 className="text-4xl md:text-5xl font-serif text-primary tracking-tight font-black">
           {getScenarioTitle(scenario)}
         </h2>
       </div>
@@ -49,13 +49,13 @@ export function ResultCard({ data, scenario, onReset }: ResultCardProps) {
         </div>
 
         {/* Plain English Column (Highlighted) */}
-        <div className="bg-primary rounded-2xl shadow-2xl shadow-primary/10 p-8 md:p-10 text-white flex flex-col relative transform md:-translate-y-6 border border-primary/10 transition-transform duration-500 hover:-translate-y-7">
+        <div className="bg-primary rounded-2xl shadow-2xl shadow-primary/10 p-8 md:p-10 text-white flex flex-col relative transform md:-translate-y-6 border border-primary/10 transition-all duration-500 hover:-translate-y-7 hover:shadow-primary/20">
            <div className="absolute top-0 left-8 -translate-y-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-blue-900/20 flex items-center gap-2">
             <Sparkles size={10} />
             Plain Interpretation
           </div>
 
-          <div className="flex-1 flex flex-col justify-center space-y-8">
+          <div className="flex-1 flex flex-col justify-center space-y-8 animate-in fade-in slide-in-from-top-4 duration-1000">
             <h3 className="text-2xl md:text-3xl font-serif font-bold text-white leading-tight border-b border-white/10 pb-6">
               {data.riskHeadline}
             </h3>
