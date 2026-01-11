@@ -78,7 +78,7 @@ export function Hero() {
               className="h-64 bg-slate-100 border border-slate-200 rounded-2xl transform"
               style={{ 
                 rotate: `${(i % 2 === 0 ? 1 : -1) * (i + 1)}deg`,
-                translateY: `${i * 10}px`
+                transform: `translateY(${i * 10}px)`
               }}
             />
           ))}

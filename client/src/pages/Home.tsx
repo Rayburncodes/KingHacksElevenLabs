@@ -64,6 +64,14 @@ export default function Home() {
     setActiveScenario(scenario);
     setIsViewMode(true);
     mutate({ contractText, scenario });
+    
+    // Smooth scroll to results
+    setTimeout(() => {
+      const resultsElement = document.getElementById('results-view');
+      if (resultsElement) {
+        resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const handleReset = () => {
@@ -102,14 +110,14 @@ export default function Home() {
         
         {/* Results View & persistent input area */}
         <div className="space-y-12">
-            <div className="bg-white rounded-xl shadow-xl shadow-slate-200/60 border border-slate-200 overflow-hidden">
+            <div id="contract-input-area" className="bg-white rounded-xl shadow-xl shadow-slate-200/60 border border-slate-200 overflow-hidden transition-all duration-500">
               <div className="border-b border-slate-100 bg-slate-50/50 px-4 py-3 flex items-center justify-between">
                  <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
                    {isViewMode ? <Eye size={16} /> : <FileText size={16} />}
-                   <span>{isViewMode ? "Contract Review" : "Contract Input"}</span>
+                   <span>{isViewMode ? "Contract Preview" : "Edit Contract"}</span>
                  </div>
                  <div className="flex items-center gap-4">
-                   {!isViewMode && (
+                   {!isViewMode ? (
                      <label className="flex items-center gap-2 text-xs font-bold text-primary cursor-pointer hover:opacity-80 transition-opacity">
                        {isImporting ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                        <span>Import (.txt, .pdf)</span>
@@ -121,33 +129,34 @@ export default function Home() {
                           disabled={isImporting || isAnalyzing}
                         />
                      </label>
-                   )}
-                   {isViewMode && (
+                   ) : (
                     <button 
                       onClick={() => setIsViewMode(false)}
-                      className="text-xs text-primary hover:underline font-bold flex items-center gap-1"
+                      className="text-xs text-primary hover:underline font-bold flex items-center gap-1 bg-primary/5 px-2 py-1 rounded"
                     >
                       <Edit2 size={12} />
-                      Edit Original
+                      Edit or Replace Contract
                     </button>
                    )}
                    <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Step 1</span>
                  </div>
               </div>
               
-              {isViewMode && data ? (
-                <div className="p-6 h-64 overflow-y-auto text-base md:text-lg leading-relaxed font-serif whitespace-pre-wrap">
-                  <HighlightText text={contractText} snippets={data.highlightSnippets || []} />
-                </div>
-              ) : (
-                <textarea
-                  value={contractText}
-                  onChange={(e) => setContractText(e.target.value)}
-                  placeholder="Paste the full text of your contract here (e.g., Employment Agreement, Lease, Service Contract)..."
-                  className="w-full h-64 p-6 resize-none focus:outline-none focus:bg-slate-50/30 transition-colors text-base md:text-lg leading-relaxed placeholder:text-slate-300 font-serif"
-                  disabled={isAnalyzing}
-                />
-              )}
+              <div className={`transition-all duration-500 ease-in-out ${isViewMode ? 'h-32 opacity-60' : 'h-64'}`}>
+                {isViewMode && data ? (
+                  <div className="p-6 h-full overflow-y-auto text-base leading-relaxed font-serif whitespace-pre-wrap bg-slate-50/30">
+                    <HighlightText text={contractText} snippets={data.highlightSnippets || []} />
+                  </div>
+                ) : (
+                  <textarea
+                    value={contractText}
+                    onChange={(e) => setContractText(e.target.value)}
+                    placeholder="Paste the full text of your contract here (e.g., Employment Agreement, Lease, Service Contract)..."
+                    className="w-full h-full p-6 resize-none focus:outline-none focus:bg-slate-50/30 transition-colors text-base md:text-lg leading-relaxed placeholder:text-slate-300 font-serif"
+                    disabled={isAnalyzing}
+                  />
+                )}
+              </div>
             </div>
 
           <div className="space-y-6">
@@ -211,12 +220,14 @@ export default function Home() {
           </div>
 
           {data && activeScenario && (
-            <ResultCard 
-              key={`${activeScenario}-${data.originalClause}`}
-              data={data} 
-              scenario={activeScenario} 
-              onReset={handleReset} 
-            />
+            <div id="results-view" className="scroll-mt-24">
+              <ResultCard 
+                key={`${activeScenario}-${data.originalClause}`}
+                data={data} 
+                scenario={activeScenario} 
+                onReset={handleReset} 
+              />
+            </div>
           )}
         </div>
       </main>
