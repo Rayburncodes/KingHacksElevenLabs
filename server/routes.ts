@@ -40,7 +40,8 @@ export async function registerRoutes(
         Return ONLY a JSON object with this structure:
         {
           "originalClause": "substring from the contract...",
-          "plainEnglish": "Your explanation here..."
+          "plainEnglish": "Your explanation here...",
+          "highlightSnippets": ["exact sentence 1 from contract", "exact sentence 2 from contract"]
         }`;
 
       const userPrompt = `Scenario: ${input.scenario}\n\nContract Text:\n${input.contractText}`;
@@ -62,21 +63,24 @@ export async function registerRoutes(
         console.error("Failed to parse AI response:", resultText);
         aiResult = { 
           originalClause: "Could not parse AI response.", 
-          plainEnglish: "An error occurred while analyzing the contract." 
+          plainEnglish: "An error occurred while analyzing the contract.",
+          highlightSnippets: []
         };
       }
 
-      // Store in DB for history (optional but good practice)
+      // Store in DB for history
       const saved = await storage.createAnalysis({
         ...input,
         originalClause: aiResult.originalClause || "Not found",
-        plainEnglish: aiResult.plainEnglish || "Could not generate explanation"
+        plainEnglish: aiResult.plainEnglish || "Could not generate explanation",
+        highlightSnippets: aiResult.highlightSnippets || []
       });
 
       res.json({
         originalClause: saved.originalClause || "",
         plainEnglish: saved.plainEnglish || "",
-        audioUrl: undefined // Frontend handles TTS via browser API
+        highlightSnippets: saved.highlightSnippets || [],
+        audioUrl: undefined
       });
 
     } catch (error) {

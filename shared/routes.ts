@@ -11,6 +11,7 @@ export const api = {
         200: z.object({
           originalClause: z.string(),
           plainEnglish: z.string(),
+          highlightSnippets: z.array(z.string()).optional(),
           audioUrl: z.string().optional(),
         }),
         500: z.object({

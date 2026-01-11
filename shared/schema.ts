@@ -9,6 +9,7 @@ export const analyses = pgTable("analyses", {
   scenario: varchar("scenario", { length: 50 }).notNull(), // 'quit', 'payment', 'terminate'
   originalClause: text("original_clause"),
   plainEnglish: text("plain_english"),
+  highlightSnippets: text("highlight_snippets").array(), // Specific strings to highlight
   createdAt: timestamp("created_at").defaultNow(),
 });
 
