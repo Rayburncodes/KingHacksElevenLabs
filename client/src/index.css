@@ -31,30 +31,36 @@
   --input: 214 20% 85%;
   --ring: 222 47% 11%;
   
-  --radius: 0.25rem; /* Sharp, professional corners */
+  --radius: 0.5rem; /* Slightly softer corners */
 }
 
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased selection:bg-primary/10;
     font-family: var(--font-sans);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
-    @apply font-bold tracking-tight text-primary;
+    @apply font-bold tracking-tight text-primary leading-tight;
   }
 }
 
 @layer components {
   .btn-scenario {
-    @apply h-auto py-6 px-8 text-lg font-serif font-medium border-2 border-primary/10 
-           hover:border-primary/40 hover:bg-white hover:shadow-lg hover:-translate-y-0.5
-           active:translate-y-0 active:shadow-sm
-           transition-all duration-300 ease-out flex flex-col items-center justify-center gap-2;
+    @apply h-auto py-8 px-6 text-lg font-serif font-medium border border-slate-200 
+           bg-white shadow-sm ring-offset-background
+           hover:border-primary/20 hover:bg-slate-50/50 hover:shadow-md hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-inner
+           transition-all duration-300 ease-out flex flex-col items-center justify-center gap-3
+           rounded-xl;
   }
   
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl;
+    @apply bg-white/70 backdrop-blur-md border border-slate-200/60 shadow-lg rounded-2xl;
+  }
+
+  .fade-in-gentle {
+    @apply animate-in fade-in duration-700 ease-in-out;
   }
 }

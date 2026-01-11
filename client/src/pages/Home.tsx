@@ -156,38 +156,47 @@ export default function Home() {
                <span className="h-px bg-slate-200 flex-1"></span>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid md:grid-cols-3 gap-6">
               <button
                 onClick={() => handleAnalyze('quit')}
                 disabled={isAnalyzing}
-                className={`btn-scenario bg-white text-slate-700 hover:text-primary group relative overflow-hidden ${activeScenario === 'quit' ? 'border-primary ring-1 ring-primary' : ''}`}
+                className={`btn-scenario ${activeScenario === 'quit' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <LogOut size={32} strokeWidth={1.5} className="mb-2 text-slate-400 group-hover:text-primary transition-colors" />
-                <span className="relative">If I quit early</span>
-                <span className="text-xs font-sans text-muted-foreground relative group-hover:text-primary/70">Resignation clauses</span>
+                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                  <LogOut size={24} strokeWidth={1.5} />
+                </div>
+                <div className="text-center">
+                  <span className="block text-slate-900">If I quit early</span>
+                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Resignation terms</span>
+                </div>
               </button>
 
               <button
                 onClick={() => handleAnalyze('payment')}
                 disabled={isAnalyzing}
-                className={`btn-scenario bg-white text-slate-700 hover:text-primary group relative overflow-hidden ${activeScenario === 'payment' ? 'border-primary ring-1 ring-primary' : ''}`}
+                className={`btn-scenario ${activeScenario === 'payment' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <CreditCard size={32} strokeWidth={1.5} className="mb-2 text-slate-400 group-hover:text-primary transition-colors" />
-                <span className="relative">If I miss payment</span>
-                <span className="text-xs font-sans text-muted-foreground relative group-hover:text-primary/70">Default & Penalties</span>
+                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                  <CreditCard size={24} strokeWidth={1.5} />
+                </div>
+                <div className="text-center">
+                  <span className="block text-slate-900">If I miss payment</span>
+                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Late fees & default</span>
+                </div>
               </button>
 
               <button
                 onClick={() => handleAnalyze('terminate')}
                 disabled={isAnalyzing}
-                className={`btn-scenario bg-white text-slate-700 hover:text-primary group relative overflow-hidden ${activeScenario === 'terminate' ? 'border-primary ring-1 ring-primary' : ''}`}
+                className={`btn-scenario ${activeScenario === 'terminate' ? 'border-primary/40 bg-slate-50/80 ring-1 ring-primary/10' : ''}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <UserX size={32} strokeWidth={1.5} className="mb-2 text-slate-400 group-hover:text-primary transition-colors" />
-                <span className="relative">If they fire me</span>
-                <span className="text-xs font-sans text-muted-foreground relative group-hover:text-primary/70">Termination Rights</span>
+                <div className="p-3 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-colors duration-300">
+                  <UserX size={24} strokeWidth={1.5} />
+                </div>
+                <div className="text-center">
+                  <span className="block text-slate-900">If they fire me</span>
+                  <span className="text-xs font-sans font-normal text-muted-foreground group-hover:text-primary/70 transition-colors">Employer termination</span>
+                </div>
               </button>
             </div>
           </div>
