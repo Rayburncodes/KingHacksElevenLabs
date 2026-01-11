@@ -27,5 +27,8 @@ export type AnalyzeRequest = InsertAnalysis;
 export type AnalyzeResponse = {
   originalClause: string;
   plainEnglish: string;
+  highlightSnippets?: string[];
+  clarityLevel?: 'High' | 'Medium' | 'Low';
+  clarityReason?: string;
   audioUrl?: string; // Placeholder for future TTS integration
 };
