@@ -140,7 +140,7 @@ export async function registerRoutes(
       }
 
       const ELEVEN_LABS_API_KEY = process.env.ELEVEN_LABS_API_KEY;
-      const ELEVEN_LABS_VOICE_ID = "pNInz6obpg7In99lS12f"; // Adam - professional male voice
+      const ELEVEN_LABS_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // Rachel - default voice known to be available on all accounts
 
       if (!ELEVEN_LABS_API_KEY) {
         return res.status(500).json({ message: "ElevenLabs API key not configured" });
