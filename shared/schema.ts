@@ -7,6 +7,7 @@ export const analyses = pgTable("analyses", {
   id: serial("id").primaryKey(),
   contractText: text("contract_text").notNull(),
   scenario: varchar("scenario", { length: 50 }).notNull(), // 'quit', 'payment', 'terminate'
+  language: varchar("language", { length: 20 }).notNull().default("english"), // 'english', 'french', 'spanish'
   originalClause: text("original_clause"),
   plainEnglish: text("plain_english"),
   riskHeadline: text("risk_headline"), // One-sentence summary
@@ -19,6 +20,7 @@ export const analyses = pgTable("analyses", {
 export const insertAnalysisSchema = createInsertSchema(analyses).pick({
   contractText: true,
   scenario: true,
+  language: true,
 });
 
 export type InsertAnalysis = z.infer<typeof insertAnalysisSchema>;
