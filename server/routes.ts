@@ -121,6 +121,7 @@ export async function registerRoutes(
         riskHeadline: saved.riskHeadline || "",
         originalClause: saved.originalClause || "",
         plainEnglish: saved.plainEnglish || "",
+        language: saved.language as "english" | "french" | "spanish",
         highlightSnippets: saved.highlightSnippets || [],
         clarityLevel: (saved.clarityLevel as 'High' | 'Medium' | 'Low') || "Low",
         clarityReason: saved.clarityReason || "",
@@ -135,20 +136,29 @@ export async function registerRoutes(
 
   app.post("/api/tts", async (req, res) => {
     try {
-      const { text } = req.body;
+      const { text, language = 'english' } = req.body;
       if (!text) {
         return res.status(400).json({ message: "Text is required" });
       }
 
       const ELEVEN_LABS_API_KEY = process.env.ELEVEN_LABS_API_KEY;
-      const ELEVEN_LABS_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // Rachel - default voice known to be available on all accounts
+      
+      // Map languages to high-quality multilingual voices
+      // Rachel (21m00Tcm4TlvDq8ikWAM) supports many languages including ES/FR
+      const VOICE_MAP: Record<string, string> = {
+        english: "21m00Tcm4TlvDq8ikWAM", // Rachel
+        french: "21m00Tcm4TlvDq8ikWAM",  // Rachel supports French
+        spanish: "21m00Tcm4TlvDq8ikWAM", // Rachel supports Spanish
+      };
+
+      const voiceId = VOICE_MAP[language] || VOICE_MAP.english;
 
       if (!ELEVEN_LABS_API_KEY) {
         return res.status(500).json({ message: "ElevenLabs API key not configured" });
       }
 
       const response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_LABS_VOICE_ID}`,
+        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
         {
           method: "POST",
           headers: {
@@ -157,7 +167,7 @@ export async function registerRoutes(
           },
           body: JSON.stringify({
             text,
-            model_id: "eleven_monolingual_v1",
+            model_id: "eleven_multilingual_v2", // Multilingual v2 is better for non-English
             voice_settings: {
               stability: 0.5,
               similarity_boost: 0.75,

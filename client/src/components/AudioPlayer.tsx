@@ -3,10 +3,11 @@ import { Play, Pause, Volume2, RotateCcw, Loader2 } from 'lucide-react';
 
 interface AudioPlayerProps {
   textToSpeak: string;
+  language?: string;
   autoPlay?: boolean;
 }
 
-export function AudioPlayer({ textToSpeak, autoPlay = true }: AudioPlayerProps) {
+export function AudioPlayer({ textToSpeak, language = 'english', autoPlay = true }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -21,7 +22,7 @@ export function AudioPlayer({ textToSpeak, autoPlay = true }: AudioPlayerProps) 
         const response = await fetch('/api/tts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: textToSpeak }),
+          body: JSON.stringify({ text: textToSpeak, language }),
         });
 
         if (!response.ok) throw new Error('Failed to fetch audio');

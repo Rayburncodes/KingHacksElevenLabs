@@ -31,6 +31,7 @@ export type AnalyzeResponse = {
   riskHeadline: string;
   originalClause: string;
   plainEnglish: string;
+  language: "english" | "french" | "spanish";
   highlightSnippets?: string[];
   clarityLevel?: 'High' | 'Medium' | 'Low';
   clarityReason?: string;
