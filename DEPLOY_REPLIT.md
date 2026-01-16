@@ -1,4 +1,4 @@
-# Deploying ClauseCast to Replit
+# Deploying ClauseAI to Replit
 
 ## Quick Setup Guide
 

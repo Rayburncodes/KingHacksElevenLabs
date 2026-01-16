@@ -1,8 +1,8 @@
-# ClauseCast
+# ClauseAI
 
 ## Overview
 
-ClauseCast is a contract consequence simulator that helps users understand the real-world implications of breaking a contract. Users paste or upload contract text, select one of three predefined scenarios (quitting early, missing a payment, or being terminated), and the app finds the relevant clause, rewrites it in plain English, and speaks the explanation aloud using text-to-speech.
+ClauseAI is a contract consequence simulator that helps users understand the real-world implications of breaking a contract. Users paste or upload contract text, select one of three predefined scenarios (quitting early, missing a payment, or being terminated), and the app finds the relevant clause, rewrites it in plain English, and speaks the explanation aloud using text-to-speech.
 
 This is **not a chatbot** - it's a focused tool that analyzes contracts for specific breach scenarios and delivers clear, professional explanations.
 

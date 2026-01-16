@@ -1,6 +1,6 @@
-# ClauseCast
+# ClauseAI
 
-ClauseCast is a contract consequence simulator that helps users understand the real-world implications of legal clauses.
+ClauseAI is a contract consequence simulator that helps users understand the real-world implications of legal clauses.
 
 ## Features
 - **AI Contract Analysis**: Extracts specific clauses and translates them into plain English.
@@ -10,7 +10,7 @@ ClauseCast is a contract consequence simulator that helps users understand the r
 
 ## Local Setup
 
-To run ClauseCast locally on your machine, follow these steps:
+To run ClauseAI locally on your machine, follow these steps:
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or higher)
@@ -21,7 +21,7 @@ To run ClauseCast locally on your machine, follow these steps:
 ### 1. Clone the repository
 ```bash
 git clone <your-repo-url>
-cd ClauseCast
+cd ClauseAI
 ```
 
 ### 2. Install dependencies
@@ -32,7 +32,7 @@ npm install
 ### 3. Environment Variables
 Create a `.env` file in the root directory and add the following:
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/clausecast
+DATABASE_URL=postgresql://user:password@localhost:5432/clauseai
 AI_INTEGRATIONS_OPENAI_API_KEY=your_openai_api_key
 ELEVEN_LABS_API_KEY=your_elevenlabs_api_key
 SESSION_SECRET=a_random_secure_string

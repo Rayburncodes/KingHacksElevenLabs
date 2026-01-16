@@ -23,7 +23,7 @@ export default function Security() {
     {
       icon: <ShieldCheck className="w-8 h-8 text-primary" />,
       title: "No User Accounts",
-      description: "ClauseCast is an anonymous tool. We don't ask for your name, email, or any identifying details."
+      description: "ClauseAI is an anonymous tool. We don't ask for your name, email, or any identifying details."
     }
   ];
 
@@ -67,7 +67,7 @@ export default function Security() {
           <div className="bg-primary/5 p-8 rounded-2xl border border-primary/10 text-center">
             <h3 className="text-lg font-serif font-bold text-primary mb-2">Our Commitment</h3>
             <p className="text-slate-600 text-sm max-w-xl mx-auto italic">
-              "ClauseCast was built on the principle that legal clarity should never come at the cost of personal privacy."
+              "ClauseAI was built on the principle that legal clarity should never come at the cost of personal privacy."
             </p>
           </div>
         </motion.div>

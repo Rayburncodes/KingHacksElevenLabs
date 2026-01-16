@@ -82,7 +82,7 @@ export function ChatAssistant({ contractText, scenario, language }: ChatAssistan
                     <Bot className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-lg leading-tight">ClauseCast AI</h3>
+                    <h3 className="font-serif font-bold text-lg leading-tight">ClauseAI</h3>
                     <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold opacity-70">
                       <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
                       Legal Assistant

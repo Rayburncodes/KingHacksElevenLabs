@@ -176,7 +176,7 @@ export async function registerRoutes(
         messages: [
           {
             role: "system",
-            content: `You are ClauseCast AI, a professional legal assistant. 
+            content: `You are ClauseAI, a professional legal assistant. 
             Answer follow-up questions about a specific contract scenario.
             
             Context:

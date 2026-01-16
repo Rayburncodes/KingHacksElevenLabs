@@ -31,7 +31,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-xl md:text-2xl text-slate-500 font-medium max-w-2xl mx-auto"
           >
-            ClauseCast deciphers legal jargon to reveal the real-world consequences of your worst-case scenarios.
+            ClauseAI deciphers legal jargon to reveal the real-world consequences of your worst-case scenarios.
           </motion.p>
         </div>
 

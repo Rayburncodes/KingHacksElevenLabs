@@ -150,7 +150,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-xl font-serif font-black tracking-tight text-primary uppercase">
-                ClauseCast
+                ClauseAI
               </h1>
               <div className="h-0.5 w-8 bg-primary/20 rounded-full mt-0.5"></div>
             </div>
