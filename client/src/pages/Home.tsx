@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { HighlightText } from "@/components/HighlightText";
 import { Hero } from "@/components/Hero";
 import { ChatAssistant } from "@/components/ChatAssistant";
+import { Link } from "wouter";
 import { Scale, LogOut, CreditCard, UserX, ArrowRight, Loader2, FileText, Eye, Edit2, Upload } from "lucide-react";
 import { api } from "@shared/routes";
 
@@ -109,9 +110,9 @@ export default function Home() {
           </div>
           <div className="hidden md:flex items-center gap-6">
             <nav className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-400">
-              <a href="#" className="hover:text-primary transition-colors">How it works</a>
-              <a href="#" className="hover:text-primary transition-colors">Scenarios</a>
-              <a href="#" className="hover:text-primary transition-colors">Security</a>
+              <Link href="/how-it-works" className="hover:text-primary transition-colors cursor-pointer">How it works</Link>
+              <Link href="/scenarios" className="hover:text-primary transition-colors cursor-pointer">Scenarios</Link>
+              <Link href="/security" className="hover:text-primary transition-colors cursor-pointer">Security</Link>
             </nav>
             <div className="h-4 w-px bg-slate-200"></div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">
