@@ -5,19 +5,17 @@ import { api } from "@shared/routes";
 import { insertAnalysisSchema } from "@shared/schema";
 import OpenAI from "openai";
 import multer from "multer";
-import { createRequire } from "module";
-
-const require = createRequire(import.meta.url);
-const pdf = require("pdf-parse");
 
 // Configure multer for file uploads
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Initialize OpenAI client using Replit AI integration env vars
-const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+// Only initialize if API key is available
+const openaiApiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+const openai = openaiApiKey ? new OpenAI({
+  apiKey: openaiApiKey,
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-});
+}) : null;
 
 export async function registerRoutes(
   httpServer: Server,
@@ -32,8 +30,11 @@ export async function registerRoutes(
 
       let text = "";
       if (req.file.mimetype === 'application/pdf') {
-        const data = await pdf(req.file.buffer);
-        text = data.text;
+        // pdf-parse v2+ uses PDFParse class
+        const { PDFParse } = await import("pdf-parse");
+        const parser = new PDFParse({ data: req.file.buffer });
+        const result = await parser.getText();
+        text = result.text;
       } else if (req.file.mimetype === 'text/plain') {
         text = req.file.buffer.toString('utf-8');
       } else {
@@ -49,29 +50,36 @@ export async function registerRoutes(
 
   app.post(api.analyze.process.path, async (req, res) => {
     try {
+      if (!openai) {
+        return res.status(500).json({ 
+          message: "OpenAI API key not configured. Please set AI_INTEGRATIONS_OPENAI_API_KEY or OPENAI_API_KEY environment variable." 
+        });
+      }
+
       const input = insertAnalysisSchema.parse(req.body);
 
       const systemPrompt = 
         `You are a helpful legal assistant for a non-lawyer. 
-        Your job is to analyze a contract text and explain the consequences of a specific scenario in simple, plain language.
+        Your job is to analyze a contract text and explain the consequences of a specific scenario or question in simple, plain language.
         
         The user will provide:
-        1. A scenario (e.g., "quit", "payment", "terminate")
+        1. A scenario or question (e.g., "quit", "payment", "terminate", or a custom question like "What happens if I take a leave of absence?")
         2. Contract text
         3. Target language (e.g., "english", "french", "spanish")
 
         You must:
-        1. Find the specific clause(s) in the text relevant to that scenario.
+        1. Find the specific clause(s) in the text relevant to that scenario or question.
         2. Extract the original text of that clause (keep it in its original language from the contract).
         3. Write a 1-2 paragraph explanation in the requested target language. 
            - Be calm, professional, and neutral.
-           - Mention specific penalties, notice periods, or fees if they exist.
+           - Mention specific penalties, notice periods, fees, or restrictions if they exist.
            - If the contract is silent on the issue, state that clearly.
            - Do not use legal jargon.
+           - For custom questions, directly address what the user asked.
         
         Return ONLY a JSON object with this structure:
         {
-          "riskHeadline": "One clear summary sentence in the target language about the main consequence...",
+          "riskHeadline": "One clear summary sentence in the target language about the main consequence or answer...",
           "originalClause": "substring from the contract in its original language...",
           "plainEnglish": "Your explanation here in the target language...",
           "highlightSnippets": ["exact sentence 1 from contract", "exact sentence 2 from contract"],
@@ -79,10 +87,14 @@ export async function registerRoutes(
           "clarityReason": "Short reason in the target language for the level"
         }`;
 
-      const userPrompt = `Scenario: ${input.scenario}\nTarget Language: ${input.language}\n\nContract Text:\n${input.contractText}`;
+      // Check if scenario is a predefined one or a custom question
+      const isPredefinedScenario = ['quit', 'payment', 'terminate'].includes(input.scenario.toLowerCase());
+      const promptLabel = isPredefinedScenario ? 'Scenario' : 'Question';
+      
+      const userPrompt = `${promptLabel}: ${input.scenario}\nTarget Language: ${input.language}\n\nContract Text:\n${input.contractText}`;
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-5.1",
+        model: "gpt-4o-mini", // Using gpt-4o-mini as default, fallback to gpt-3.5-turbo if needed
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
@@ -94,7 +106,9 @@ export async function registerRoutes(
       let aiResult;
       try {
         aiResult = JSON.parse(resultText);
-      } catch (e) {
+      } catch (parseError) {
+        console.error("Failed to parse AI response:", parseError);
+        console.error("Raw response:", resultText);
         console.error("Failed to parse AI response:", resultText);
         aiResult = { 
           riskHeadline: "An error occurred during analysis.",
@@ -128,9 +142,25 @@ export async function registerRoutes(
         audioUrl: undefined
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Analysis error:", error);
-      res.status(500).json({ message: "Failed to analyze contract" });
+      
+      // Provide more specific error messages
+      if (error?.code === 'invalid_api_key' || error?.status === 401) {
+        return res.status(500).json({ 
+          message: "Invalid OpenAI API key. The key you provided appears to be an ElevenLabs key. Please get an OpenAI API key from https://platform.openai.com/api-keys (keys start with 'sk-', not 'sk_')" 
+        });
+      }
+      
+      if (error?.message?.includes('API key')) {
+        return res.status(500).json({ 
+          message: error.message || "OpenAI API key error. Please check your configuration." 
+        });
+      }
+      
+      res.status(500).json({ 
+        message: error?.message || "Failed to analyze contract. Please check your OpenAI API key and try again." 
+      });
     }
   });
 
