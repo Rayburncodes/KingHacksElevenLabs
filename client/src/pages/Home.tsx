@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAnalyzeContract } from "@/hooks/use-analyze";
 import { ResultCard } from "@/components/ResultCard";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +18,28 @@ export default function Home() {
   const { toast } = useToast();
   
   const { mutate, isPending, data, reset } = useAnalyzeContract();
+
+  // Handle automatic scroll when data arrives
+  useEffect(() => {
+    if (data && activeScenario) {
+      const scrollTimer = setTimeout(() => {
+        const explanationElement = document.getElementById('explanation-card');
+        if (explanationElement) {
+          const offset = 120;
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = explanationElement.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+      return () => clearTimeout(scrollTimer);
+    }
+  }, [data, activeScenario]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,23 +93,6 @@ export default function Home() {
       scenario, 
       language 
     } as any);
-    
-    // Smooth scroll to results
-    setTimeout(() => {
-      const explanationElement = document.getElementById('explanation-card');
-      if (explanationElement) {
-        const offset = 120; // Slightly more offset for the explanation card
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = explanationElement.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }, 150); // Slightly longer delay to ensure component is fully rendered
   };
 
   const handleReset = () => {
