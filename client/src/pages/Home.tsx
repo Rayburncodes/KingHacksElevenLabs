@@ -68,8 +68,8 @@ export default function Home() {
     mutate({ 
       contractText, 
       scenario, 
-      language: language as "english" | "french" | "spanish" 
-    });
+      language 
+    } as any);
     
     // Smooth scroll to results
     setTimeout(() => {
@@ -257,6 +257,14 @@ export default function Home() {
           )}
         </div>
       </main>
+
+      {data && activeScenario && (
+        <ChatAssistant 
+          contractText={contractText}
+          scenario={activeScenario}
+          language={language}
+        />
+      )}
 
       {/* Loading Overlay */}
       {isAnalyzing && (
