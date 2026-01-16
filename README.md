@@ -56,3 +56,7 @@ The app will be available at `http://localhost:5000`.
 - **Backend**: Express, Node.js.
 - **ORM**: Drizzle ORM.
 - **AI**: OpenAI GPT-4o.
+
+## Contributors
+- [Rayburncodes](https://github.com/Rayburncodes) - Development & Deployment
+- [Andrew126111](https://github.com/Andrew126111) - Project Creator
