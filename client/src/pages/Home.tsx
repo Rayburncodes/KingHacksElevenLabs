@@ -74,11 +74,11 @@ export default function Home() {
     
     // Smooth scroll to results
     setTimeout(() => {
-      const resultsElement = document.getElementById('results-view');
-      if (resultsElement) {
-        const offset = 100; // Offset for sticky header
+      const explanationElement = document.getElementById('explanation-card');
+      if (explanationElement) {
+        const offset = 120; // Slightly more offset for the explanation card
         const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = resultsElement.getBoundingClientRect().top;
+        const elementRect = explanationElement.getBoundingClientRect().top;
         const elementPosition = elementRect - bodyRect;
         const offsetPosition = elementPosition - offset;
 
@@ -87,7 +87,7 @@ export default function Home() {
           behavior: 'smooth'
         });
       }
-    }, 100);
+    }, 150); // Slightly longer delay to ensure component is fully rendered
   };
 
   const handleReset = () => {

@@ -49,7 +49,7 @@ export function ResultCard({ data, scenario, onReset }: ResultCardProps) {
         </div>
 
         {/* Plain English Column (Highlighted) */}
-        <div className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 p-8 md:p-10 text-slate-800 flex flex-col relative transform md:-translate-y-6 border-2 border-accent/20 transition-all duration-500 hover:-translate-y-7 hover:shadow-slate-300/50">
+        <div id="explanation-card" className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 p-8 md:p-10 text-slate-800 flex flex-col relative transform md:-translate-y-6 border-2 border-accent/20 transition-all duration-500 hover:-translate-y-7 hover:shadow-slate-300/50">
            <div className="absolute top-0 left-8 -translate-y-1/2 bg-accent text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-accent/20 flex items-center gap-2">
             <Sparkles size={10} />
             Plain Interpretation
