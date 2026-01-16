@@ -91,11 +91,11 @@ export default function Home() {
   const isAnalyzing = isPending;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-slate-900 font-sans selection:bg-primary/20">
+    <div className="min-h-screen bg-[#FDFCFB] text-slate-800 font-sans selection:bg-primary/20">
       {/* Decorative background element */}
-      <div className="fixed inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-50"></div>
+      <div className="fixed inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-30"></div>
 
-      <header className="relative pt-6 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-200/50">
+      <header className="relative pt-6 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-200/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-primary text-white p-2 rounded-lg shadow-md">

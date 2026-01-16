@@ -49,28 +49,28 @@ export function ResultCard({ data, scenario, onReset }: ResultCardProps) {
         </div>
 
         {/* Plain English Column (Highlighted) */}
-        <div className="bg-primary rounded-2xl shadow-2xl shadow-primary/10 p-8 md:p-10 text-white flex flex-col relative transform md:-translate-y-6 border border-primary/10 transition-all duration-500 hover:-translate-y-7 hover:shadow-primary/20">
-           <div className="absolute top-0 left-8 -translate-y-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-blue-900/20 flex items-center gap-2">
+        <div className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 p-8 md:p-10 text-slate-800 flex flex-col relative transform md:-translate-y-6 border-2 border-accent/20 transition-all duration-500 hover:-translate-y-7 hover:shadow-slate-300/50">
+           <div className="absolute top-0 left-8 -translate-y-1/2 bg-accent text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl shadow-accent/20 flex items-center gap-2">
             <Sparkles size={10} />
             Plain Interpretation
           </div>
 
           <div className="flex-1 flex flex-col justify-center space-y-8 animate-in fade-in slide-in-from-top-4 duration-1000">
-            <h3 className="text-2xl md:text-3xl font-serif font-bold text-white leading-tight border-b border-white/10 pb-6">
+            <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-800 leading-tight border-b border-slate-100 pb-6">
               {data.riskHeadline}
             </h3>
-            <p className="text-lg md:text-xl leading-relaxed font-medium text-slate-200/90 italic">
+            <p className="text-lg md:text-xl leading-relaxed font-medium text-slate-600 italic">
               {data.plainEnglish}
             </p>
             
             {data.clarityLevel && (
-              <div className="text-[10px] font-bold uppercase tracking-widest text-white/40 pt-2 border-t border-white/5 flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full ${data.clarityLevel === 'High' ? 'bg-emerald-400' : data.clarityLevel === 'Medium' ? 'bg-amber-400' : 'bg-rose-400'}`} />
+              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 pt-2 border-t border-slate-100 flex items-center gap-2">
+                <div className={`w-1.5 h-1.5 rounded-full ${data.clarityLevel === 'High' ? 'bg-emerald-400' : data.clarityLevel === 'Medium' ? 'bg-accent' : 'bg-rose-400'}`} />
                 Clarity: {data.clarityLevel} — <span className="font-normal normal-case opacity-60 italic">{data.clarityReason || (data.clarityLevel === 'High' ? 'explicit clause and clear numbers found' : data.clarityLevel === 'Medium' ? 'clause inferred but not explicit' : 'contract does not clearly specify consequences')}</span>
               </div>
             )}
             
-            <div className="pt-6 border-t border-white/10">
+            <div className="pt-6 border-t border-slate-100">
               <AudioPlayer 
                 textToSpeak={data.plainEnglish} 
                 language={data.language} // Assuming language is returned in data or we need to pass it

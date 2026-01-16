@@ -9,19 +9,19 @@
   --font-serif: 'Merriweather', serif;
 
   /* Professional, "Legal" Palette - Navy, Slate, Parchment-ish White */
-  --background: 210 20% 98%;      /* Very light cool gray/white */
-  --foreground: 222 47% 11%;      /* Deep navy/black text */
+  --background: 30 20% 98%;      /* Soft off-white / warm gray */
+  --foreground: 222 15% 15%;      /* Charcoal (not pure black) text */
   
-  --primary: 222 47% 11%;         /* Deep navy for primary actions */
+  --primary: 215 25% 27%;         /* Muted navy/slate blue */
   --primary-foreground: 210 40% 98%;
   
-  --secondary: 210 20% 94%;       /* Light gray for secondary containers */
-  --secondary-foreground: 222 47% 11%;
+  --secondary: 30 20% 94%;       /* Warm gray for secondary containers */
+  --secondary-foreground: 222 15% 15%;
   
-  --muted: 210 20% 90%;
-  --muted-foreground: 215 16% 47%;
+  --muted: 30 10% 90%;
+  --muted-foreground: 215 10% 45%;
   
-  --accent: 215 25% 27%;          /* Slate for accents */
+  --accent: 38 92% 50%;          /* Soft amber for risk highlights */
   --accent-foreground: 210 40% 98%;
   
   --destructive: 0 84% 60%;
