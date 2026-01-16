@@ -53,25 +53,26 @@ export async function registerRoutes(
 
       const systemPrompt = 
         `You are a helpful legal assistant for a non-lawyer. 
-        Your job is to analyze a contract text and explain the consequences of a specific scenario in simple, plain language.
+        Your job is to analyze a contract text and explain the consequences of a specific scenario or question in simple, plain language.
         
         The user will provide:
-        1. A scenario (e.g., "quit", "payment", "terminate")
+        1. A scenario or question (e.g., "quit", "payment", "terminate", or a custom question like "What happens if I take a leave of absence?")
         2. Contract text
         3. Target language (e.g., "english", "french", "spanish")
 
         You must:
-        1. Find the specific clause(s) in the text relevant to that scenario.
+        1. Find the specific clause(s) in the text relevant to that scenario or question.
         2. Extract the original text of that clause (keep it in its original language from the contract).
         3. Write a 1-2 paragraph explanation in the requested target language. 
            - Be calm, professional, and neutral.
-           - Mention specific penalties, notice periods, or fees if they exist.
+           - Mention specific penalties, notice periods, fees, or restrictions if they exist.
            - If the contract is silent on the issue, state that clearly.
            - Do not use legal jargon.
+           - For custom questions, directly address what the user asked.
         
         Return ONLY a JSON object with this structure:
         {
-          "riskHeadline": "One clear summary sentence in the target language about the main consequence...",
+          "riskHeadline": "One clear summary sentence in the target language about the main consequence or answer...",
           "originalClause": "substring from the contract in its original language...",
           "plainEnglish": "Your explanation here in the target language...",
           "highlightSnippets": ["exact sentence 1 from contract", "exact sentence 2 from contract"],
@@ -79,7 +80,11 @@ export async function registerRoutes(
           "clarityReason": "Short reason in the target language for the level"
         }`;
 
-      const userPrompt = `Scenario: ${input.scenario}\nTarget Language: ${input.language}\n\nContract Text:\n${input.contractText}`;
+      // Check if scenario is a predefined one or a custom question
+      const isPredefinedScenario = ['quit', 'payment', 'terminate'].includes(input.scenario.toLowerCase());
+      const promptLabel = isPredefinedScenario ? 'Scenario' : 'Question';
+      
+      const userPrompt = `${promptLabel}: ${input.scenario}\nTarget Language: ${input.language}\n\nContract Text:\n${input.contractText}`;
 
       const completion = await openai.chat.completions.create({
         model: "gpt-5.1",

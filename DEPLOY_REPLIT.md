@@ -6,7 +6,8 @@
 1. Go to [Replit](https://replit.com/)
 2. Click **"Create Repl"**
 3. Select **"Import from GitHub"**
-4. Enter repository: `https://github.com/Andrew126111/KingHacks-ElevenLabs`
+4. Enter repository: `https://github.com/Rayburncodes/KingHacks-ElevenLabs`
+   - Or use direct link: https://replit.com/github/Rayburncodes/KingHacks-ElevenLabs
 5. Click **"Import"**
 
 ### 2. Environment Variables (Secrets)

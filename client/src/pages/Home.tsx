@@ -4,12 +4,14 @@ import { ResultCard } from "@/components/ResultCard";
 import { useToast } from "@/hooks/use-toast";
 import { HighlightText } from "@/components/HighlightText";
 import { Hero } from "@/components/Hero";
-import { Scale, LogOut, CreditCard, UserX, ArrowRight, Loader2, FileText, Eye, Edit2, Upload } from "lucide-react";
+import { Scale, LogOut, CreditCard, UserX, ArrowRight, Loader2, FileText, Eye, Edit2, Upload, MessageSquare } from "lucide-react";
 import { api } from "@shared/routes";
 
 export default function Home() {
   const [contractText, setContractText] = useState("");
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
+  const [customQuestion, setCustomQuestion] = useState("");
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const [language, setLanguage] = useState<"english" | "french" | "spanish">("english");
   const [isViewMode, setIsViewMode] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -75,9 +77,44 @@ export default function Home() {
     }, 100);
   };
 
+  const handleCustomQuestion = () => {
+    if (!contractText.trim()) {
+      toast({
+        title: "Contract text required",
+        description: "Please paste your contract text before asking a question.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!customQuestion.trim()) {
+      toast({
+        title: "Question required",
+        description: "Please enter your question before analyzing.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setActiveScenario(customQuestion);
+    setIsViewMode(true);
+    setShowCustomInput(false);
+    mutate({ contractText, scenario: customQuestion, language: language as any });
+    
+    // Smooth scroll to results
+    setTimeout(() => {
+      const resultsElement = document.getElementById('results-view');
+      if (resultsElement) {
+        resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
   const handleReset = () => {
     reset();
     setActiveScenario(null);
+    setCustomQuestion("");
+    setShowCustomInput(false);
     setContractText("");
     setIsViewMode(false);
   };
@@ -184,9 +221,9 @@ export default function Home() {
               </p>
             )}
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-4 gap-6">
               <button
-                onClick={() => handleAnalyze('quit')}
+                onClick={() => { setShowCustomInput(false); handleAnalyze('quit'); }}
                 disabled={isAnalyzing}
                 className={`btn-scenario ${activeScenario === 'quit' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
@@ -200,7 +237,7 @@ export default function Home() {
               </button>
 
               <button
-                onClick={() => handleAnalyze('payment')}
+                onClick={() => { setShowCustomInput(false); handleAnalyze('payment'); }}
                 disabled={isAnalyzing}
                 className={`btn-scenario ${activeScenario === 'payment' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
@@ -214,7 +251,7 @@ export default function Home() {
               </button>
 
               <button
-                onClick={() => handleAnalyze('terminate')}
+                onClick={() => { setShowCustomInput(false); handleAnalyze('terminate'); }}
                 disabled={isAnalyzing}
                 className={`btn-scenario ${activeScenario === 'terminate' ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
               >
@@ -226,7 +263,79 @@ export default function Home() {
                   <span className="block text-[11px] font-sans font-medium text-slate-400 group-hover:text-primary/60 transition-colors uppercase tracking-wider">Termination Rights</span>
                 </div>
               </button>
+
+              <button
+                onClick={() => {
+                  setShowCustomInput(true);
+                  setActiveScenario(null);
+                  if (!contractText.trim()) {
+                    toast({
+                      title: "Contract text required",
+                      description: "Please paste your contract text first.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+                disabled={isAnalyzing}
+                className={`btn-scenario ${showCustomInput || (activeScenario && !['quit', 'payment', 'terminate'].includes(activeScenario)) ? 'border-primary/60 bg-slate-50/80 ring-1 ring-primary/10' : 'border-slate-200 shadow-sm'}`}
+              >
+                <div className="p-4 bg-slate-50 rounded-full text-slate-400 group-hover:text-primary group-hover:bg-white transition-all duration-300 group-hover:shadow-sm">
+                  <MessageSquare size={24} strokeWidth={1.5} />
+                </div>
+                <div className="text-center space-y-1">
+                  <span className="block text-slate-900 font-bold">Ask a question</span>
+                  <span className="block text-[11px] font-sans font-medium text-slate-400 group-hover:text-primary/60 transition-colors uppercase tracking-wider">Custom Question</span>
+                </div>
+              </button>
             </div>
+
+            {showCustomInput && (
+              <div className="mt-6 bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4 animate-in slide-in-from-top duration-300">
+                <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                  <MessageSquare size={16} />
+                  <span>Enter your custom question</span>
+                </div>
+                <div className="space-y-3">
+                  <textarea
+                    value={customQuestion}
+                    onChange={(e) => setCustomQuestion(e.target.value)}
+                    placeholder="e.g., What happens if I take a leave of absence? What are the non-compete restrictions? What happens if I breach confidentiality?"
+                    className="w-full p-4 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none font-sans text-sm leading-relaxed"
+                    rows={3}
+                    disabled={isAnalyzing}
+                  />
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleCustomQuestion}
+                      disabled={isAnalyzing || !customQuestion.trim()}
+                      className="px-6 py-2.5 bg-primary text-white rounded-lg font-semibold text-sm hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                    >
+                      {isAnalyzing ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <ArrowRight size={16} />
+                          Analyze Contract
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowCustomInput(false);
+                        setCustomQuestion("");
+                      }}
+                      disabled={isAnalyzing}
+                      className="px-4 py-2.5 text-slate-600 hover:text-slate-900 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {data && activeScenario && (
