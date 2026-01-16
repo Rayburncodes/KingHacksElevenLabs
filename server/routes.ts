@@ -5,19 +5,17 @@ import { api } from "@shared/routes";
 import { insertAnalysisSchema } from "@shared/schema";
 import OpenAI from "openai";
 import multer from "multer";
-import { createRequire } from "module";
-
-const require = createRequire(import.meta.url);
-const pdf = require("pdf-parse");
 
 // Configure multer for file uploads
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Initialize OpenAI client using Replit AI integration env vars
-const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+// Only initialize if API key is available
+const openaiApiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+const openai = openaiApiKey ? new OpenAI({
+  apiKey: openaiApiKey,
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-});
+}) : null;
 
 export async function registerRoutes(
   httpServer: Server,
@@ -32,8 +30,11 @@ export async function registerRoutes(
 
       let text = "";
       if (req.file.mimetype === 'application/pdf') {
-        const data = await pdf(req.file.buffer);
-        text = data.text;
+        // pdf-parse v2+ uses PDFParse class
+        const { PDFParse } = await import("pdf-parse");
+        const parser = new PDFParse({ data: req.file.buffer });
+        const result = await parser.getText();
+        text = result.text;
       } else if (req.file.mimetype === 'text/plain') {
         text = req.file.buffer.toString('utf-8');
       } else {
@@ -49,6 +50,12 @@ export async function registerRoutes(
 
   app.post(api.analyze.process.path, async (req, res) => {
     try {
+      if (!openai) {
+        return res.status(500).json({ 
+          message: "OpenAI API key not configured. Please set AI_INTEGRATIONS_OPENAI_API_KEY or OPENAI_API_KEY environment variable." 
+        });
+      }
+
       const input = insertAnalysisSchema.parse(req.body);
 
       const systemPrompt = 
@@ -87,7 +94,7 @@ export async function registerRoutes(
       const userPrompt = `${promptLabel}: ${input.scenario}\nTarget Language: ${input.language}\n\nContract Text:\n${input.contractText}`;
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-5.1",
+        model: "gpt-4o-mini", // Using gpt-4o-mini as default, fallback to gpt-3.5-turbo if needed
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
@@ -99,7 +106,9 @@ export async function registerRoutes(
       let aiResult;
       try {
         aiResult = JSON.parse(resultText);
-      } catch (e) {
+      } catch (parseError) {
+        console.error("Failed to parse AI response:", parseError);
+        console.error("Raw response:", resultText);
         console.error("Failed to parse AI response:", resultText);
         aiResult = { 
           riskHeadline: "An error occurred during analysis.",
@@ -133,9 +142,25 @@ export async function registerRoutes(
         audioUrl: undefined
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Analysis error:", error);
-      res.status(500).json({ message: "Failed to analyze contract" });
+      
+      // Provide more specific error messages
+      if (error?.code === 'invalid_api_key' || error?.status === 401) {
+        return res.status(500).json({ 
+          message: "Invalid OpenAI API key. The key you provided appears to be an ElevenLabs key. Please get an OpenAI API key from https://platform.openai.com/api-keys (keys start with 'sk-', not 'sk_')" 
+        });
+      }
+      
+      if (error?.message?.includes('API key')) {
+        return res.status(500).json({ 
+          message: error.message || "OpenAI API key error. Please check your configuration." 
+        });
+      }
+      
+      res.status(500).json({ 
+        message: error?.message || "Failed to analyze contract. Please check your OpenAI API key and try again." 
+      });
     }
   });
 

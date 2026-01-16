@@ -17,7 +17,7 @@ export default function Home() {
   const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
   
-  const { mutate, isPending, data, reset } = useAnalyzeContract();
+  const { mutate, isPending, data, reset, error, isError } = useAnalyzeContract();
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -66,7 +66,18 @@ export default function Home() {
     
     setActiveScenario(scenario);
     setIsViewMode(true);
-    mutate({ contractText, scenario, language: language as any });
+    mutate(
+      { contractText, scenario, language: language as any },
+      {
+        onError: (error: Error) => {
+          toast({
+            title: "Analysis failed",
+            description: error.message || "Failed to analyze contract. Please check your OpenAI API key configuration.",
+            variant: "destructive",
+          });
+        },
+      }
+    );
     
     // Smooth scroll to results
     setTimeout(() => {
@@ -99,7 +110,18 @@ export default function Home() {
     setActiveScenario(customQuestion);
     setIsViewMode(true);
     setShowCustomInput(false);
-    mutate({ contractText, scenario: customQuestion, language: language as any });
+    mutate(
+      { contractText, scenario: customQuestion, language: language as any },
+      {
+        onError: (error: Error) => {
+          toast({
+            title: "Analysis failed",
+            description: error.message || "Failed to analyze contract. Please check your OpenAI API key configuration.",
+            variant: "destructive",
+          });
+        },
+      }
+    );
     
     // Smooth scroll to results
     setTimeout(() => {
